@@ -264,7 +264,8 @@ def _find_ontology_file():
     miss the loader only warns, so predicate linking, the whitelist and the
     domain/range checks were silently disabled for any run from src/, tests/ or
     a notebook. Order: DBPEDIA_OWL_PATH, cwd (old behaviour), this file's dir
-    (Docker), ../data (repo).
+    (Docker), ../data (repo), data/ (notebook cell run from GSoC26/, where
+    `here` falls back to the cwd).
     """
     env = os.environ.get("DBPEDIA_OWL_PATH")
     if env:
@@ -276,6 +277,7 @@ def _find_ontology_file():
         os.path.join(os.getcwd(), "dbpedia.owl"),
         os.path.join(here, "dbpedia.owl"),
         os.path.join(here, "..", "data", "dbpedia.owl"),
+        os.path.join(here, "data", "dbpedia.owl"),
     ]:
         if os.path.isfile(cand):
             return os.path.abspath(cand)
